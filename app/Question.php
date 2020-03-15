@@ -20,4 +20,14 @@ class Question extends Model
     $this->attributes['title'] = $value; //タイトル属性に値を割り当てる
     $this->attributes['slug'] = Str::slug($value); //スラッグ形式に変換
    }
+
+   public function getUrlAttribute()
+   {
+       return route("questions.show",$this->id);
+   }
+
+   public function getCreatedDateAttribute()
+   {
+       return $this->created_at->diffForHumans();
+   }
 }
