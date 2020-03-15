@@ -5,14 +5,23 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">全ての質問</div>
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h2>全ての質問</h2>
+                        <div class="ml-auto">
+                            <a href="{{ route('questions.create') }}" class="btn btn-outline-secondary">新しく質問する</a>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-body">
                     @foreach($questions as $question)
                     <div class="media">
                         <div class="d-flex flex-column counters">
-                            <div class="vote">　<!-- 投票数の表示 -->
-                                <strong>{{ $question->votes }}</strong>{{ str_plural('vote', $question->votes) }} <!--str_pluralで単数形に変換 -->
+                            <div class="vote">　
+                                <!-- 投票数の表示 -->
+                                <strong>{{ $question->votes }}</strong>{{ str_plural('vote', $question->votes) }}
+                                <!--str_pluralで単数形に変換 -->
                             </div>
                             <div class="status {{ $question->status }}">
                                 <strong>{{ $question->answers }}</strong>{{ str_plural('answer', $question->answers) }}
