@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use Illuminate\Http\Request;
+use App\Http\Requests\AskQuestionRequest; //バリデーションファイルの読み込み
 
 class QuestionsController extends Controller
 {
@@ -39,9 +40,11 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AskQuestionRequest $request)
     {
-        //
+        $request->user()->questions()->create($request->only('title','body'));
+
+        return redirect()->route('questions.index')->with('success',"質問を投稿しました!");
     }
 
     /**
