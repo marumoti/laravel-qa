@@ -17,7 +17,7 @@ class QuestionsController extends Controller
     {
         $questions = Question::with('user')->latest()->paginate(5);
 
-        return view('questions.index',compact('questions')); //compactで変数を渡す
+        return view('questions.index', compact('questions')); //compactで変数を渡す
 
 
     }
@@ -31,7 +31,7 @@ class QuestionsController extends Controller
     {
         $question = new Question();
 
-        return view('questions.create',compact($question));
+        return view('questions.create', compact('question'));
     }
 
     /**
@@ -42,9 +42,9 @@ class QuestionsController extends Controller
      */
     public function store(AskQuestionRequest $request)
     {
-        $request->user()->questions()->create($request->only('title','body'));
+        $request->user()->questions()->create($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success',"質問を投稿しました!");
+        return redirect()->route('questions.index')->with('success', "質問を投稿しました!");
     }
 
     /**
@@ -55,9 +55,9 @@ class QuestionsController extends Controller
      */
     public function show(Question $question)
     {
-            $question->increment('views');
-            
-            return view('questions.show',compact('question'));
+        $question->increment('views');
+
+        return view('questions.show', compact('question'));
     }
 
     /**
@@ -68,7 +68,14 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        return view('questions.edit',compact('question'));
+        // if (\Gate::allows('update-question', $question)) {
+        //     return view('questions.edit', compact('question'));
+        // }
+        // abort(403,"Access denied");
+        if (\Gate::denies('update-question', $question)) {
+            abort(403, "Access denied");
+        }
+        return view('questions.edit', compact('question'));
     }
 
     /**
@@ -80,9 +87,12 @@ class QuestionsController extends Controller
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
-        $question->update($request->only('title','body'));
+        if (\Gate::denies('update-question', $question)) {
+            abort(403, "Access denied");
+        }
+        $question->update($request->only('title', 'body'));
 
-        return redirect('/questions')->with('success',"質問が更新されました");
+        return redirect('/questions')->with('success', "質問が更新されました");
     }
 
     /**
@@ -93,8 +103,11 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
+        if (\Gate::denies('delete-question', $question)) {
+            abort(403, "Access denied");
+        }
         $question->delete();
 
-        return redirect('/questions')->with('success',"質問を削除しました");
+        return redirect('/questions')->with('success', "質問を削除しました");
     }
 }
