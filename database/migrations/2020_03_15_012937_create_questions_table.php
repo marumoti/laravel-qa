@@ -21,7 +21,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedInteger('views')->default(0); //質問が何回されたかを表示
             $table->unsignedInteger('answers')->default(0); //質問の回答数を表示
             $table->integer('votes')->default(0); //質問を投票している人数を表示
-            $table->unsignedInteger('best_answer_id')->nullable(); //ベストアンサーのIDを表示
+            $table->unsignedBigInteger('best_answer_id')->nullable(); //ベストアンサーのIDを表示
             $table->unsignedBigInteger('user_id'); //質問をした、ユーザーID
             $table->timestamps();
 
