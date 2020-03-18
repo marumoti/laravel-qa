@@ -28,10 +28,14 @@ class Answer extends Model
     public static function boot()
     {
         parent::boot();
-        
-        static::created(function ($answer){
+
+        static::created(function ($answer) {
             $answer->question->increment('answers_count');
         });
+    }
 
+    public function getCreatedDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 }
