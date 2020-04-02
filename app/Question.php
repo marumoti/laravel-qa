@@ -32,7 +32,7 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getStatusAttribute()     //質問の状態を返す
+    public function getStatusAttribute()     
     {
         if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
@@ -53,5 +53,11 @@ class Question extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function acceptBestAnswer(Answer $answer)
+    {
+        $this->best_answer_id = $answer->id;
+        $this->save();
     }
 }
