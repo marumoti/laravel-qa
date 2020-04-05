@@ -22,7 +22,7 @@
                         <div class="d-flex flex-column counters">
                             <div class="vote">　
                                 <!-- 投票数の表示 -->
-                                <strong>{{ $question->votes }}</strong>{{ str_plural('vote', $question->votes) }}
+                                <strong>{{ $question->votes_count }}</strong>{{ str_plural('vote', $question->votes_count) }}
                                 <!--str_pluralで単数形に変換 -->
                             </div>
                             <div class="status {{ $question->status }}">
