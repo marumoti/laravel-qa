@@ -24,6 +24,11 @@ class Question extends Model
         $this->attributes['slug'] = Str::slug($value); //スラッグ形式に変換
     }
 
+    // public function setBodyAttribute($value)
+    // {
+    //     $this->attributes['body'] = clen($value);
+    // }
+
     public function getUrlAttribute()
     {
         return route("questions.show", $this->slug);
@@ -34,7 +39,7 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getStatusAttribute()     
+    public function getStatusAttribute()
     {
         if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
@@ -47,8 +52,9 @@ class Question extends Model
 
     public function getBodyHtmlAttribute()
     {
-        $markdown = new CommonMarkConverter(['allow_unsafe_links' => false]);
-        return $markdown->convertToHtml($this->body);
+        return clean($this->bodyHtml());
+        // $markdown = new CommonMarkConverter(['allow_unsafe_links' => false]);
+        // return $markdown->convertToHtml($this->body);
         // return \Parsedown::instance()->text($this->body);
     }
 
@@ -81,5 +87,21 @@ class Question extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    public function getExcerptAttribute()
+    {
+        return $this->excerpt(250);
+    }
+
+    public function excerpt($length)
+    {
+        return str_limit(strip_tags($this->bodyHtml()), $length);
+    }
+
+    private function bodyHtml()
+    {
+        $markdown = new CommonMarkConverter(['allow_unsafe_links' => false]);
+        return $markdown->convertToHtml($this->body);
     }
 }

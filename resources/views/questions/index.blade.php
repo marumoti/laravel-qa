@@ -38,7 +38,7 @@
                                 <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
                                 <div class="ml-auto">
                                     @can("update",$question)
-                                     <a href="{{ route('questions.edit',$question->id) }}" class="btn btn-sm btn-outline-info">編集する</a>
+                                    <a href="{{ route('questions.edit',$question->id) }}" class="btn btn-sm btn-outline-info">編集する</a>
                                     @endcan
 
                                     @can("delete",$question)
@@ -55,7 +55,7 @@
                                 <a href="{{ $question->user->url }}">{{ $question->user->name }}</a>
                                 <small class="text-muted">{{ $question->created_date }}</small>
                             </p>
-                            {{ str_limit($question->body, 250) }}
+                            <div class="excerpt">{{ $question->excerpt(350) }}</div>
                         </div>
                     </div>
                     <hr>
