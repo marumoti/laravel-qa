@@ -13,6 +13,9 @@ class Question extends Model
 
     protected $fillable = ['title', 'body']; //指定した属性しか持たない
 
+    protected $appends = ['created_date'];
+
+
     public function user()
     { //質問はユーザに属する
         return $this->belongsTo(User::class); //1対多
